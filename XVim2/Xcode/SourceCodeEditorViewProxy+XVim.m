@@ -165,7 +165,23 @@
         self.preservedColumn = [self.textStorage xvim_columnOfIndex:self.insertionPoint];
     }
 
+    [self maintainScrollOffset];
+
     DEBUG_LOG(@"[%p]New Insertion Point:%d   Preserved Column:%d", self, self.insertionPoint, self.preservedColumn);
+}
+
+-(void)maintainScrollOffset{
+
+    NSInteger topLine,bottomLine;
+    topLine = self.insertionLine - 5;
+    bottomLine = self.insertionLine + 5;
+
+    if(topLine<1) topLine = 1;
+    if(bottomLine > [self.textStorage xvim_numberOfLines]) bottomLine = [self.textStorage xvim_numberOfLines];
+
+    [self xvim_scrollTo:[self.textStorage xvim_indexOfLineNumber:topLine]];
+    [self xvim_scrollTo:[self.textStorage xvim_indexOfLineNumber:bottomLine]];
+
 }
 
 /**
